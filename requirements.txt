@@ -1,0 +1,8 @@
+discum
+discord_webhook
+inputimeout
+
+
+2captcha-python
+
+discum -e git+https://github.com/ericz/Discord-S.C.U.M#egg=discum

@@ -1,0 +1,5 @@
+Current version: 1.5.2
+
+-Upgraded Automatically Solve Captcha
+-The Console Won't Close Automatically After Stop Anymore
+-Fix Some Issues
