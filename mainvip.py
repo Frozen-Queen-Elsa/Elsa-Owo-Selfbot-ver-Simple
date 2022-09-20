@@ -1156,6 +1156,7 @@ def thread105():
 					main = time()
 					print(f"{at()}{color.okblue} [INFO]{color.reset} Sleeping")
 					sleep(random.randint(250, 500))
+					os.system('python "mainvip.py"')
      
 			#Spam Mode
 			if client.daily.lower()=='yes':
