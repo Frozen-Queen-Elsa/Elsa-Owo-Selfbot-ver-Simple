@@ -5,7 +5,7 @@
 
 * This Auto use Python and Selenium 
 
-# Discord-selfbot-owo-bot-MODED
+# ELSA-OwO-Selfbot
 
 **Keep In Mind This Repository Is For Educational Purposes Only. Selfbot are against Discord's ToS and against OwO's Rules! Use It At Your Own Risk!**
 
