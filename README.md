@@ -3,7 +3,7 @@
 
 **THANKS TO Ahihiyou20 for the origin Auto**
 
-* This Auto use Python and Selenium 
+
 
 # ELSA-OwO-Selfbot version Simple
 
