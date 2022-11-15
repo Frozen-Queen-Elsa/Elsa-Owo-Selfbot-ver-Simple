@@ -5,4 +5,4 @@ inputimeout
 
 2captcha-python
 
-git+git://github.com/ericz/Discord-S.C.U.M
+git+https://github.com/ericz/Discord-S.C.U.M
