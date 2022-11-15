@@ -254,24 +254,33 @@ def webhookping():
 
 @bot.gateway.command
 def issuechecker(resp):
-
-	def getAnswer(img,lenghth,code):
-		count=0
+	def getAnswer(img, lenghth, code, code2, code3):
+		count = 0
+		timeanswer = time()
 		while True:
-			count+=1
-			r = solver.normal(img,numeric=2,minLen=lenghth,maxLen=lenghth,phrase=0,caseSensitive=0,calc=0,lang='en',textinstructions=code,)
-			print(f"Answer from 2captcha is: {r['code']} at {count} try")
-			if r['code'].isalpha():
-				if len(r['code'])==lenghth:
-					print('Check result 2 captcha')
-					return r
+			if time() - timeanswer < 300:
+				count += 1
+				r = solver.normal(img, numeric=2, minLen=lenghth, maxLen=lenghth, phrase=0, caseSensitive=0, calc=0,
+								  lang='en', textinstructions=code, )
+
+				if r['code'].isalpha():
+					if len(r['code']) == lenghth:
+						if r['code'] != code2 and r['code'] != code3:
+							print('Check result 2 captcha')
+							return r
+						else:
+							solver.report(r['captchaId'], False)
+							print(f'Time: {count}. The answer {r["code"]} is not right.Try again')
+					else:
+						solver.report(r['captchaId'], False)
+						print(f'Time: {count}. The length of result {r["code"]} is not right.Try again')
+
 				else:
-					solver.report(r['captchaId'], False) 
-					print('The length of result is not right.Try again')
-					
+					solver.report(r['captchaId'], False)
+					print(f'Time: {count}. The result {r["code"]} contants number.Try again')
 			else:
-				solver.report(r['captchaId'], False) 
-				print('The result contants number.Try again')
+				print(f'TIME OUT 5 MINUTES for SOLVE')
+				return 'captcha'
 
 	try:
 		user = bot.gateway.session.user
@@ -349,7 +358,7 @@ def issuechecker(resp):
 
 					#Solve by 2Captcha
 					code=""
-					r = getAnswer(encoded_string,countlen,code)
+					r = getAnswer(encoded_string,countlen,code,0,0)
 					captchabalance = solver.balance()
 					ui.slowPrinting(f'Balance 2CAPCHA : {captchabalance} $')
 					ui.slowPrinting(f"{color.okcyan}[INFO] {color.reset}Solving Captcha at 1st chance: [Code: {r['code']}]")
@@ -376,48 +385,48 @@ def issuechecker(resp):
 						textjoin=[r['code'],textwrong]
 						texthint=' '.join(textjoin)
 						code=texthint
-						r2 = getAnswer(encoded_string,countlen,code)
+						r2 = getAnswer(encoded_string,countlen,code,r['code'],0)
 						ui.slowPrinting(f"{color.okcyan}[INFO] {color.reset}Solving Captcha at 2nd chance: [Code: {r2['code']}]")   
 						bot.sendMessage(dmsid, r2['code'])						
 						captchabalance = solver.balance()
 						ui.slowPrinting(f'Balance 2CAPCHA : {captchabalance} $')
 						sleep(3)
-						msgs = bot.getMessages(dmsid)      
+						msgs2 = bot.getMessages(dmsid)      
 						try:
-							msgs = json.loads(msgs.text[1:-1]) if type(msgs.json()) is list else {'author': {'id': '0'}}
+							msgs2 = json.loads(msgs.text[1:-1]) if type(msgs2.json()) is list else {'author': {'id': '0'}}
 						except:
 							webhookping()					
 							ui.slowPrinting(f"{color.okcyan}[INFO] {color.reset}There's An Issue With Rerunner")
 							webhookPing(f"=========================================================================================")
 							sleep(2)
 							return "captcha"      
-						if msgs['author']['id'] == client.OwOID and "verified" in msgs['content']:		
+						if msgs2['author']['id'] == client.OwOID and "verified" in msgs2['content']:		
 							solver.report(r2['captchaId'], True)
 							return "solved"
-						if msgs['author']['id'] == client.OwOID and "Wrong verification code" in msgs['content']:
+						if msgs2['author']['id'] == client.OwOID and "Wrong verification code" in msgs2['content']:
 							solver.report(r2['captchaId'], False) 
 							textjoin=[r2["code"],textand,textjoin,"ARE WRONG"]
 							texthint=' '.join(textjoin)
 							code=texthint
-							r3 = getAnswer(encoded_string,countlen,code)
+							r3 = getAnswer(encoded_string,countlen,code,r['code'],r2['code'])
 							ui.slowPrinting(f"{color.okcyan}[INFO] {color.reset}Solving Captcha at 3rd chance: [Code: {r3['code']}]") 
 							bot.sendMessage(dmsid, r3['code'])  
 							captchabalance = solver.balance()
 							ui.slowPrinting(f'Balance 2CAPCHA : {captchabalance} $')
 							sleep(3)
-							msgs = bot.getMessages(dmsid)      
+							msgs3 = bot.getMessages(dmsid)      
 							try:
-								msgs = json.loads(msgs.text[1:-1]) if type(msgs.json()) is list else {'author': {'id': '0'}}
+								msgs3 = json.loads(msgs3.text[1:-1]) if type(msgs3.json()) is list else {'author': {'id': '0'}}
 							except:
 								webhookping()						
 								ui.slowPrinting(f"{color.okcyan}[INFO] {color.reset}There's An Issue With Rerunner")
 								webhookPing(f"=========================================================================================")
 								sleep(2)
 								return "captcha"      
-							if msgs['author']['id'] == client.OwOID and "verified" in msgs['content']:		
+							if msgs3['author']['id'] == client.OwOID and "verified" in msgs3['content']:		
 								solver.report(r3['captchaId'], True)
 								return "solved"
-							if msgs['author']['id'] == client.OwOID and "Wrong verification code" in msgs['content']:	       
+							if msgs3['author']['id'] == client.OwOID and "Wrong verification code" in msgs3['content']:	       
 								solver.report(r3['captchaId'], False) 							
 								webhookPing(f"<@{client.webhookping}> [FAIL]I have solved the captcha fail in the 3rd chance. Sorry very much. Please solve the captcha by yourself in the last chance. Carefully. Good Luck . User: {client.username} <@{client.userid}>")
 								return 'captcha'	
