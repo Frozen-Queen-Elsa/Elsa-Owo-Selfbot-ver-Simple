@@ -215,7 +215,7 @@ def security(resp):
 		sleep(3)
 		print(f'{color.okcyan}[INFO] {color.reset}Captcha Solved. Started To Run Again')
 		loopie()
-		#execl(executable, executable, *argv)
+		execl(executable, executable, *argv)
 	if issuechecker(resp) == "captcha":
 		client.stopped = True
 		webhookping()
