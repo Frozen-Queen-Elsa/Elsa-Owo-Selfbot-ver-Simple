@@ -21,20 +21,21 @@ from menu import UI
 from color import color
 from data import data
 import threading
-
+import discum
+from discum.utils.slash import SlashCommander
+from discord_webhook import DiscordWebhook
 
 try:
 
     from twocaptcha import TwoCaptcha
     from inputimeout import inputimeout, TimeoutOccurred
-    from discum import *
-    from discum.utils.slash import SlashCommander
-    from discord_webhook import DiscordWebhook
+	from discord_webhook import DiscordWebhook
 except:
 	from setup import install
 	install()
 	from discum import *
-	from discum.utils.slash import SlashCommander
+
+	from discord_webhook import DiscordWebhook
 
 wbm = [13, 16]
 ui = UI()
