@@ -1,4 +1,4 @@
-discum
+
 discord_webhook
 inputimeout
 2captcha-python
