@@ -1019,11 +1019,11 @@ def runnerbuy():
 def owoexp():
 	if client.em.lower() == "yes" and client.stopped != True:
 		try:
-			response = get("https://quote-garden.herokuapp.com/api/v3/quotes/random")
+			response = get("https://zenquotes.io/api/random")
 			if response.status_code == 200:
 				json_data = response.json()
-				data = json_data['data']
-				bot.sendMessage(str(client.channelspam), data[0]['quoteText'])
+				data = json_data[0]
+				bot.sendMessage(str(client.channelspam), data['q'])
 				print(f'{at()}{color.okcyan} User: {client.username}{color.okcyan} [SPAM] {color.reset}')
 				client.totaltext += 1
 				sleep(random.randint(1, 6))
